@@ -1,55 +1,13 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <title>App Simple</title>
-  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-</head>
-<body style="font-family: Arial; padding: 2rem;">
-
-  <div id="app">
-    <h1>Mes Messages</h1>
-    <input v-model="nouveauMessage" placeholder="Écrire un message...">
-    <button @click="ajouterMessage">Envoyer</button>
-
-    <ul>
-      <li v-for="msg in messages" :key="msg.id">{{ msg.texte }}</li>
-    </ul>
-  </div>
-
-  <script>
-    const { createApp, ref, onMounted } = Vue
-
-    createApp({
-      setup() {
-        const messages = ref([])
-        const nouveauMessage = ref('')
-
-        // Récupérer les messages depuis l'API Flask
-        const chargerMessages = async () => {
-          const res = await fetch('http://back.local/messages')
-          messages.value = await res.json()
-        }
-
-        // Envoyer un message à l'API Flask
-        const ajouterMessage = async () => {
-          if (!nouveauMessage.value) return;
-          await fetch('http://back.local/messages', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ texte: nouveauMessage.value })
-          })
-          nouveauMessage.value = ''
-          chargerMessages()
-        }
-
-        // Charger au démarrage
-        onMounted(chargerMessages)
-
-        return { messages, nouveauMessage, ajouterMessage }
-      }
-    }).mount('#app')
-  </script>
-
-</body>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>App Simple</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
 </html>
